@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
         // Récupération extension fichier à partir du type MIME
         const extension = MIME_TYPES[file.mimetype]; 
         // Construction du nom de fichier en ajoutant le timeStamp actuel, pour rendre chaque images unique
-        callback(null, name + Date.now() + '.' + extension); 
+        callback(null, name + Date.now() + '.' + 'webp'); 
     }
 });
 
