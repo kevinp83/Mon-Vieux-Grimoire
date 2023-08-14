@@ -4,7 +4,6 @@ const express = require('express');
 
 const app = express();
 
-
 app.use(express.static("../images"));
 
 // Type MIME acceptés et leurs extensions correspondantes
@@ -13,8 +12,6 @@ const MIME_TYPES = {
     'image/jpeg': 'jpeg',
     'image/png': 'png'
 };
-
-
 
 // Configuration de multer pour la gestion des fichiers
 const storage = multer.diskStorage({
