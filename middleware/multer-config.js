@@ -5,7 +5,7 @@ const express = require('express');
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpeg',
-    'image/png': 'png'
+    'image/png': 'png',
 };
 
 // Configuration de multer pour la gestion des fichiers

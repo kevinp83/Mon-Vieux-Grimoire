@@ -78,7 +78,7 @@ exports.addRating = (req, res, next) => {
                   .then((book) => {
                       res.status(200).json(book);
                   })
-                  .catch((error) => res.status(400).json({error}));
+                  .catch((error) => res.status(400).json({message: "La sauvegarde du livre dans la base de données n'a pas fonctionner."}));
           });
       });
 };
@@ -86,7 +86,7 @@ exports.addRating = (req, res, next) => {
 // Modifie un livre existant
 exports.modifyBook = (req, res, next) => {
   const { title, author, year, genre } = req.body; // Récupère les nouvelles informations du livre depuis la requête
-  const imageUrl = req.file
+  const imageUrl = req.file.filename
     ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     : null; // Met à jour l'URL de l'image du livre si une nouvelle image est fournie
 
@@ -112,12 +112,12 @@ exports.modifyBook = (req, res, next) => {
             res.status(200).json({ message: "Livre modifié avec succès !" });
           })
           .catch((error) => {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({message: "La modification du livre n'a pas fonctionné." });
           });
       }
     })
     .catch((error) => {
-      res.status(400).json({ error: error.message });
+      res.status(400).json({message: "La modification du livre n'a pas fonctionné." });
     });
 };
 
@@ -142,13 +142,13 @@ exports.deleteBook = (req, res, next) => {
               res.status(200).json({ message: "Livre supprimé avec succès !" });
             })
             .catch((error) => {
-              res.status(400).json({ error: error.message });
+              res.status(400).json({message: "La suppression du livre n'a pas fonctionné."});
             });
         });
       }
     })
     .catch((error) => {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({message: "La suppression du livre n'a pas fonctionné."});
     });
 };
 
@@ -161,7 +161,7 @@ exports.getBestRating = (req, res, next) => {
       res.status(200).json(books);
     })
     .catch((error) => {
-      res.status(400).json({ error });
+      res.status(400).json({message: "Problème lors de la récupération des 3 livres les mieux notés."});
     });
 };
 
@@ -172,10 +172,10 @@ exports.getOneBook = (req, res, next) => {
   })
     .then((book) => {
       res.status(200).json(book);
-    })
+    }) 
     .catch((error) => {
       res.status(404).json({
-        error: error,
+        message: "L'affichage du livre ne fonctionne pas.",
       });
     });
 };
@@ -188,7 +188,7 @@ exports.getAllBooks = (req, res, next) => {
     })
     .catch((error) => {
       res.status(400).json({
-        error: error,
+        message: "Erreur lors de la récupération de tout les livres.",
       });
     });
 };

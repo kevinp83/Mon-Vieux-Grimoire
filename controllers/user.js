@@ -5,6 +5,9 @@ const User = require('../models/user');
 
 // Inscrciption d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
+  if (req.body.password.length < 8) {
+    return res.status(400).json({ response: 'Le mot de passe doit contenir au moins 8 caractères.'})
+  }
   // Hachage du mot de passe avant de le stocker dans la base de données
     bcrypt.hash(req.body.password, 10)
       .then((hash) => {
@@ -16,8 +19,8 @@ exports.signup = (req, res, next) => {
 
         // sauvegarde le nouvel utilisateur dans la base de données
         user.save()
-          .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-          .catch((error) => res.status(400).json({ error }));
+          .then(() => res.status(201).json({ response: 'Utilisateur créé !' }))
+          .catch((error) => res.status(400).json({response: "La création du nouvel utilisateur n'a pas fonctionné."}));
       })
       .catch((error) => res.status(500).json({ error }));
   };
@@ -34,7 +37,7 @@ exports.login = (req, res, next) => {
             bcrypt.compare(req.body.password, user.password)
             .then((valid) => {
                 if (!valid) {
-                  return  res.status(401).json({ error: 'Paire identifiant/Mot de passe incorrect'});
+                  return  res.status(401).json({ message: 'Paire identifiant/Mot de passe incorrect'});
                 } 
 
                 // Crée un token d'authentification avec l'ID de l'utilisateur
