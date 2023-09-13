@@ -86,8 +86,8 @@ exports.addRating = (req, res, next) => {
 // Modifie un livre existant
 exports.modifyBook = (req, res, next) => {
   const { title, author, year, genre } = req.body; // Récupère les nouvelles informations du livre depuis la requête
-  const imageUrl = req.file.filename
-    ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+  const imageUrl = req.filename
+    ? `${req.protocol}://${req.get("host")}/images/${req.filename}`
     : null; // Met à jour l'URL de l'image du livre si une nouvelle image est fournie
 
   // Vérifie si le livre existe et si l'utilisateur est autorisé à le modifier

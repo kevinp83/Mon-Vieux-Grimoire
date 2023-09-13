@@ -4,7 +4,7 @@ const express = require('express');
 // Type MIME acceptés et leurs extensions correspondantes
 const MIME_TYPES = {
     'image/jpg': 'jpg',
-    'image/jpeg': 'jpeg',
+    'image/jpeg': 'jpg',
     'image/png': 'png',
 };
 

@@ -14,7 +14,7 @@ exports.signup = (req, res, next) => {
         // Crée un nouvel utilisateur avec l'email et le mot de passe haché
         const user = new User({
           email: req.body.email,
-          password: hash
+          password: hash,
         });
 
         // sauvegarde le nouvel utilisateur dans la base de données
