@@ -85,7 +85,13 @@ exports.addRating = (req, res, next) => {
 
 // Modifie un livre existant
 exports.modifyBook = (req, res, next) => {
-  const { title, author, year, genre } = req.body; // Récupère les nouvelles informations du livre depuis la requête
+
+  const bookObject = req.file ? {
+    ...JSON.parse(req.body.book),
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.filename}`
+  } : { ...req.body } // Récupère les nouvelles informations du livre depuis la requête
+  delete bookObject._userId;
+
   const imageUrl = req.filename
     ? `${req.protocol}://${req.get("host")}/images/${req.filename}`
     : null; // Met à jour l'URL de l'image du livre si une nouvelle image est fournie
@@ -96,24 +102,20 @@ exports.modifyBook = (req, res, next) => {
       if (book.userId !== req.auth.userId) {
         res.status(401).json({ message: "Non autorisé" });
       } else {
-        // Met à jour les informations du livre
-        book.title = title;
-        book.author = author;
-        book.year = year;
-        book.genre = genre;
+        // Modification image du livre
         if (imageUrl) {
-          book.imageUrl = imageUrl;
+            // On supprime l'ancienne image du livre et on met à jour le livre en base
+            fs.unlink(images/`${book.imageUrl}`, () => {
+                Book.updateOne({ _id: req.params.id }, { ...bookObject })
+                .then(() => res.status(200).json({ message: 'Livre modifié avec succès !' }))
+                .catch(error => res.status(401).json({ error }));
+            });
+          } else {
+            // Sinon, on met à jour le livre sans nouvelle image
+            Book.updateOne({ _id: req.params.id }, { ...bookObject })
+            .then(() => res.status(200).json({ message: 'Livre modifié avec succès !' }))
+            .catch(error => res.status(401).json({ error, message: "La modification du livre n'a pas fonctionné." }));
         }
-
-        // Sauvegarde les modifications du livre dans la base de données
-        book
-          .save() 
-          .then(() => {
-            res.status(200).json({ message: "Livre modifié avec succès !" });
-          })
-          .catch((error) => {
-            res.status(400).json({message: "La modification du livre n'a pas fonctionné." });
-          });
       }
     })
     .catch((error) => {
