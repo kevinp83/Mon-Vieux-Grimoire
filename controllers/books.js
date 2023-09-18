@@ -1,5 +1,6 @@
 const Book = require("../models/book");
 const fs = require("fs");
+const path = require('path');
 
 // Crée un nouveau livre
 exports.createBook = (req, res, next) => {
@@ -90,7 +91,6 @@ exports.modifyBook = (req, res, next) => {
     ...JSON.parse(req.body.book),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.filename}`
   } : { ...req.body } // Récupère les nouvelles informations du livre depuis la requête
-  delete bookObject._userId;
 
   const imageUrl = req.filename
     ? `${req.protocol}://${req.get("host")}/images/${req.filename}`
@@ -103,9 +103,9 @@ exports.modifyBook = (req, res, next) => {
         res.status(401).json({ message: "Non autorisé" });
       } else {
         // Modification image du livre
-        if (imageUrl) {
+        if (imageUrl) { 
             // On supprime l'ancienne image du livre et on met à jour le livre en base
-            fs.unlink(images/`${book.imageUrl}`, () => {
+            fs.unlink(`/images/${book.imageUrl}`, () => {
                 Book.updateOne({ _id: req.params.id }, { ...bookObject })
                 .then(() => res.status(200).json({ message: 'Livre modifié avec succès !' }))
                 .catch(error => res.status(401).json({ error }));

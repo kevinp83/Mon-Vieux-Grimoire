@@ -1,11 +1,11 @@
 const multer = require('multer');
-const express = require('express');
 
 // Type MIME acceptés et leurs extensions correspondantes
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png',
+    'image/webp': 'webp',
 };
 
 // Configuration de multer pour la gestion des fichiers

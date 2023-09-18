@@ -17,5 +17,5 @@ const bookSchema = mongoose.Schema({
     ],
     averageRating: { type: Number, default: 0 }, // Note moyenne du livre (0 par défaut)
 });
-
+ 
 module.exports = mongoose.model('Book', bookSchema);
