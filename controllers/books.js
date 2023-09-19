@@ -105,7 +105,8 @@ exports.modifyBook = (req, res, next) => {
         // Modification image du livre
         if (imageUrl) { 
             // On supprime l'ancienne image du livre et on met à jour le livre en base
-            fs.unlink(`/images/${book.imageUrl}`, () => {
+            const filename = book.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
                 Book.updateOne({ _id: req.params.id }, { ...bookObject })
                 .then(() => res.status(200).json({ message: 'Livre modifié avec succès !' }))
                 .catch(error => res.status(401).json({ error }));
