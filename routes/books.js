@@ -16,7 +16,7 @@ router.post("/", auth, multer, async (req, res, next) => {
             fs.mkdirSync("./images");
         }
     });
-
+    if (req.file) {
     const { buffer, originalname } = req.file;
     const timestamp = Date.now();
     const ref = `${timestamp}-${path.parse(originalname).name}.webp`;
@@ -25,9 +25,10 @@ router.post("/", auth, multer, async (req, res, next) => {
         .webp({ quality: 20 })
         .toFile("./images/" + ref);
 
-    req.filename = ref;
+    req.filename = ref; 
+}
     next();
-}, booksCtrl.createBook);
+} , booksCtrl.createBook);
 
 // Route pour ajouter une note à un livre
 router.post("/:id/rating", auth, booksCtrl.addRating);
